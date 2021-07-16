@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="background-color: rgb(231, 233, 232);">
+    <div style="width: 550px; height: 600px; text-align: center; margin: auto; background-color:rgb(243, 250, 249); box-shadow:0 2px 5px 2px black;border-radius: 10px; " > 
+    <h1 style="font-weight:bold; text-align: center; background-color: black; color: white; "> Project One</h1>
+   
+    ID : <br><input type="text" id="stId" name="stId"> <br/>
+    NAME : <br><input type="text" id="stName" name="stName"><br>
+    <button id="btn" name="btn" onclick="addButton()">ADD</button>
+    <br>
+    <br>
+    <table id="tableId" border="1" cellspacing="0" width="400px "
+    style="text-align: center;margin: auto; background-color: black; color: white; ">
+        <thead>
+            <tr >
+                <th>SL</th>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>ACTION</th>
+            </tr>
+            </thead>
+            <tbody id="tBody">
+                
+            </tbody>
+    </table>
+</div>
+    <script>
+        var list=[];
+
+        var stId=document.getElementById("stId");
+        var stName=document.getElementById("stName");
+        var btn=document.getElementById("btn");
+        var tBody=document.getElementById("tBody");
+
+        function addButton(){            
+        var info={
+            stId:stId.value,
+            stName:stName.value
+        }
+        list.push(info);
+        stId.value = "";
+            stName.value = "";
+
+        generateTbody();
+        }
+        function generateTbody(){
+            tBody.innerHTML="";
+            for (var i = 0; i < list.length; i++) {
+               var info = list[i];
+               var trTemp = `
+                <tr>
+                    <td>${i+1}</td>
+                    <td>${info.stId}</td>
+                    <td>${info.stName}</td>
+                    <td><button id="updateBtn" onclick="update(${i})">Update</td>
+                </tr>
+            `
+            tBody.innerHTML += trTemp;
+            }
+        }
+
+        function update(i){
+            btn.innerHTML = "update";
+            btn.setAttribute('onclick','updateInfo(' + i + ')');
+         }
+
+         function updateInfo(i){
+            var info = {
+                stId: stId.value,
+                stName: stName.value
+            }
+            list[i] = info;
+            stId.value = "";
+            stName.value = "";
+
+            btn.innerHTML = "Add";
+            btn.setAttribute('onclick','addButton()');
+
+            generateTbody();
+     }
+
+
+    </script>
+</body>
+</html>

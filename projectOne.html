@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        button.btn.btn-primary.mt-4.hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="student_id" class="form-label">Student ID</label>
+                    <input type="text" class="form-control" id="student_id" placeholder="Type student id">
+                </div>
+                <div class="form-group">
+                    <label for="student_name" class="form-label">Student Name</label>
+                    <input type="text" class="form-control" id="student_name"
+                        placeholder="Type student name"></textarea>
+                </div>
+                <button id="btnAdd" class="btn btn-primary mt-4" onclick="addStudent()">Add Students</button>
+                <button id="btnUpdate"  class="btn btn-primary mt-4 hidden" onclick="updateStudent()">Update</button>
+                <button class="btn btn-outline-info mt-4" onclick="reset()">Reset</button>
+                
+                
+
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-6">
+                <table class="table table-success table-striped">
+                    <thead>
+                        <tr>
+                            <th>SL#</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student_list_show">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+        <script>
+            var studentList=[];
+
+            function addStudent(){
+                // debugger;
+               var studentId=document.getElementById("student_id").value;
+               var studentName=document.getElementById("student_name").value;
+               document.getElementById("student_id").value="";
+               document.getElementById("student_name").value="";
+               //console.log(studentId,studentName);
+               var studentObject={id:studentId,name:studentName};
+               studentList.push(studentObject);
+               showStudentList(studentList);
+              
+            }
+
+            function reset(){
+                
+               $("#student_id").attr('disabled',true);
+               $("#student_id").removeAttr('disabled');
+            }
+
+            function showStudentList(studentList=[]){
+                document.getElementById("student_list_show").innerHTML=null;
+                for(var i=0;i<studentList.length;i++){
+                    var student=studentList[i];
+                    var html=`
+                    <tr>
+                        <td>${i+1}</td>
+                        <td>${student.id}</td>
+                        <td>${student.name}</td>
+                        <td>
+                            <button type="button" onclick="editStudent(${i})" class="btn btn-success">Edit
+                                </button>
+                                <button type="button" onclick="delStudent(${i})" class="btn btn-danger">Delete
+                                </button>
+                                </td>
+                    </tr>
+                    `;
+                    document.getElementById("student_list_show").innerHTML+=html;
+                }
+            }
+
+            function editStudent(index){
+                currentIndex=index;
+                $("#btnAdd").addClass("hidden");
+                $("#btnUpdate").removeClass("hidden");
+                var student = studentList[index];
+                document.getElementById("student_id").value=student.id;
+               document.getElementById("student_name").value=student.name;
+               $("#student_id").attr('disabled',true);
+            }
+            function updateStudent(){
+                $("#btnUpdate").addClass("hidden");
+                $("#btnAdd").removeClass("hidden");
+
+               $("#student_id").attr('disabled',true);
+               $("#student_id").removeAttr('disabled');
+               
+                var studentId=document.getElementById("student_id").value;
+               var studentName=document.getElementById("student_name").value;
+               studentList[currentIndex].id = studentId;
+                studentList[currentIndex].name = studentName;
+                showStudentList(studentList);
+
+                document.getElementById("student_id").value="";
+               document.getElementById("student_name").value="";
+            }
+
+           function delStudent(i){
+            var delStudent=studentList[i];
+            studentList.splice(i,1);
+            showStudentList(studentList);
+           }
+        </script>
+</body>
+
+</html>
